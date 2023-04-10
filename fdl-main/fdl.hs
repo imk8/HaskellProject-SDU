@@ -25,8 +25,12 @@ fractal2 = ("FX", rules2, let m 'F' = Forward; m 'L' = LeftTurn 90; m 'R' = Righ
 
 -- go from depth n to depth n+1
 apply :: State -> [Rule] -> State
-apply = error "Task 1"
-
+--apply = error "Task 1"
+apply [] _ = []
+apply (x:xs) rules = apply' x ++ apply xs rules
+  where apply' x = case lookup x [(a,b) | Rule a b <- rules] of
+          Just r -> r
+          Nothing -> [x]
 -- expand to target depth
 expand :: State -> [Rule] -> Int -> State
 expand = error "Task 2"
@@ -99,7 +103,7 @@ readFractal fileName = do
   text <- readFile fileName
   return (interpret (split text [] []) [] [] (\x -> error "unknown command") 0 0)
 
--- daw a fractal described in an .fdl file
+-- draw a fractal described in an .fdl file
 drawFdl fileName = do
   fractal <- readFractal fileName
   drawFractal fractal
