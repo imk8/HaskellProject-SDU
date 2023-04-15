@@ -24,20 +24,25 @@ fractal1 = ("F", rules1, let m 'F' = Forward; m 'L' = LeftTurn 60; m 'R' = Right
 fractal2 = ("FX", rules2, let m 'F' = Forward; m 'L' = LeftTurn 90; m 'R' = RightTurn 90; m _ = Nop in m)
 
 -- go from depth n to depth n+1
+-- apply = error "Task 1"
 apply :: State -> [Rule] -> State
---apply = error "Task 1"
 apply [] _ = []
 apply (x:xs) rules = apply' x ++ apply xs rules
   where apply' x = case lookup x [(a,b) | Rule a b <- rules] of
           Just r -> r
           Nothing -> [x]
+
 -- expand to target depth
+-- expand = error "Task 2"
 expand :: State -> [Rule] -> Int -> State
-expand = error "Task 2"
+expand state rules depth = 
+  if depth == 0 then state 
+  else expand (apply state rules) rules (depth - 1)
 
 -- convert fractal into sequence of turtle graphics commands
+-- process = error "Task 3"
 process :: Fractal -> [Command]
-process = error "Task 3"
+process (state, rules, f, depth, scale) = map f (expand state rules depth)
 
 -- helper function to go from two floating point values to a pair of integers
 toPoint :: Double -> Double -> Point
